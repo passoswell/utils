@@ -12,6 +12,12 @@
 #define PID_H
 
 
+#define PID_VER_MAJOR                                                       2021
+#define PID_VER_MINOR                                                          1
+#define PID_VER_PATCH                                                          1
+#define PID_BRANCH_MASTER
+
+
 #include <stdint.h>
 
 

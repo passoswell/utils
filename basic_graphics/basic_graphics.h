@@ -46,6 +46,13 @@
 #define BASIC_GRAPHICS_H
 
 
+
+#define BASIC_GRAPHICS_VER_MAJOR                                            2021
+#define BASIC_GRAPHICS_VER_MINOR                                               1
+#define BASIC_GRAPHICS_VER_PATCH                                               1
+#define BASIC_GRAPHICS_BRANCH_MASTER
+
+
 #include <stdint.h>
 #include "gfxfont.h"
 

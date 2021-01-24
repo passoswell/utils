@@ -19,6 +19,12 @@
 #define MATRIX_MATH_H
 
 
+#define MATRIX_MATH_VER_MAJOR                                               2021
+#define MATRIX_MATH_VER_MINOR                                                  1
+#define MATRIX_MATH_VER_PATCH                                                  1
+#define MATRIX_MATH_BRANCH_MASTER
+
+
 #include <stdint.h>
 
 
