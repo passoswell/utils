@@ -70,7 +70,8 @@ float NormVectorL2Squared(float* V, uint32_t Size)
 
 float NormVectorL2(float* V, uint32_t Size)
 {
-  return sqrtf(NormVectorL2Squared(V, Size));
+  //return sqrtf(NormVectorL2Squared(V, Size));
+  return 0;
 }
 
 

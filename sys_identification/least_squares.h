@@ -9,7 +9,7 @@
 
 
 #ifdef __cplusplus
-"C" {
+extern "C" {
 #endif
 
 
@@ -20,7 +20,7 @@
 
 #define LEAST_SQUARES_VER_MAJOR                                             2021
 #define LEAST_SQUARES_VER_MINOR                                                1
-#define LEAST_SQUARES_VER_PATCH                                                1
+#define LEAST_SQUARES_VER_PATCH                                                2
 #define LEAST_SQUARES_BRANCH_MASTER
 
 
@@ -46,9 +46,9 @@ typedef struct
  * @param  SysOutput : Line equation response to aplied SysInput.
  * @param  Parameters : Handle with all needed variables.
  * @retval void
- * @note   SysInputs is a 2-D array of size NumSamples * (NumCoeff - 1)
- *                   can be defined as float x[NumSamples * (NumCoeff - 1)]
- *                   can be defined as float x[NumSamples][NumCoeff - 1]
+ * @note   SysInputs is a 2-D array of size NumSamples * NumCoeff
+ *                   can be defined as float x[NumSamples * NumCoeff]
+ *                   can be defined as float x[NumSamples][NumCoeff]
  *                   NumCoeff is the number of coefficients to find
  *                   NumSamples is the number of points used, >= NumCoeff
  *         SysOutputs is a 1-D array of size NumSamples
@@ -61,10 +61,10 @@ typedef struct
  *         Parameters.SysCoeffs = {a0, a1, a2, ..., an},
  *         n = Parameters.NumCoeff
  *         Using values input to the equation / system
- *         SysInputs = {{x11, x21, x31, ..., xn1},
- *                      {x12, x22, x32, ..., xn2},
+ *         SysInputs = {{1, x11, x21, x31, ..., xn1},
+ *                      {1, x12, x22, x32, ..., xn2},
  *                                ...
- *                      {x1k, x2k, x3k, ..., xnk},}
+ *                      {1, x1k, x2k, x3k, ..., xnk},}
  *         And values output by the equation / system
  *         SysOutputs = {y1, y2, ..., yk},
  *         k = Parameters.NumSamples
