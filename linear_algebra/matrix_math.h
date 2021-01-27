@@ -21,7 +21,7 @@
 
 #define MATRIX_MATH_VER_MAJOR                                               2021
 #define MATRIX_MATH_VER_MINOR                                                  1
-#define MATRIX_MATH_VER_PATCH                                                  1
+#define MATRIX_MATH_VER_PATCH                                                  2
 #define MATRIX_MATH_BRANCH_MASTER
 
 
@@ -42,7 +42,7 @@
  *             ===
  *             i = 0
  */
-float NormVectorL1(float* V, int Size);
+float NormVectorL1(float *V, int Size);
 
 
 /**
@@ -60,7 +60,7 @@ float NormVectorL1(float* V, int Size);
  *            ====
  *           i = 0
  */
-float NormVectorL2Squared(float* V, uint32_t Size);
+float NormVectorL2Squared(float *V, uint32_t Size);
 
 
 /**
@@ -80,21 +80,32 @@ float NormVectorL2Squared(float* V, uint32_t Size);
  *            \/       i = 0
 
  */
-float NormVectorL2(float* V, uint32_t Size);
+float NormVectorL2(float *V, uint32_t Size);
 
 
 /**
  * @brief  Appends V2 to the end of V1 and store the result in Vresult.
  * @param  V1 : First input vector.
  * @param  SizeV1 : Size of V1.
- * @param  V2 : Size of V2.
- * @param  SizeV2 : Second input vector.
+ * @param  V2 : Second input vector.
+ * @param  SizeV2 : Size of V2.
  * @param  Vresult : Vector where the concatenated vector will be stored.
  * @param  Size : Number of elements on vector.
  * @retval void
  */
 void ConcatenateVector(float *V1, int32_t SizeV1, float *V2, int32_t SizeV2,
-    float* Vresult);
+    float *Vresult);
+
+
+/**
+ * @brief  Compute the dot product between two sequences of equal size.
+ * @param  V1 : First input vector.
+ * @param  V2 : Second input vector.
+ * @param  Size : Size of the vectors.
+ * @param  Result : Scalar where dot product result will be stored.
+ * @retval void
+ */
+void DotProduct(float *V1, float *V2, int32_t Size, float  *Result);
 
 
 /**
@@ -189,7 +200,7 @@ void ScaleMatrix(float *A, int m, int n, float k, float *C);
  * the input matrix is
  * REPLACED
  */
-int32_t InvertMatrix(float* A, int n);
+int32_t InvertMatrix(float *A, int n);
 
 #endif /* MATRIX_MATH_H */
 

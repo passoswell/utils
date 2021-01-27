@@ -62,13 +62,41 @@ int32_t LMS_Compute(float* SysInputs, float *SysOutputs, LMS_t *Parameters)
 }
 
 
-int32_t RLS_Compute(float SysInputs, float SysOutputs, LMS_t *Parameters)
+int32_t RLS_Compute(float *SysInputs, float SysOutput, RLS_t *Parameters)
 {
-  //computing
-  //%     fi = [-y(t-1);-y(t-2);u(t-1);u(t-2)];
-  //%     erro(t) = y(t)-teta'*fi;
-  //    K = p*fi/(1+fi'*p*fi);
-  //    teta = [teta, teta(:,end)+K*erro(end)];
-  //    p = (p-K*fi'*p);
+  float auxf;
+  /* computing */
+  /* y = a0x0 + a1*x1 + a2*x2 + ... + an*xn */
+  /* X = [x0, x1, x2, ..., xn] */
+  /* erro = y - coeffs'*X */
+  /* k = cov*X/(1 + X'*cov*X) */
+  /* coeffs = coeffs + k*erro */
+  /* p = p - k*X'*p */
+
+  /* erro = y - coeffs'*X */
+  DotProduct(Parameters->SysCoeffs, SysInputs, Parameters->NumCoeff,
+      &Parameters->Error);
+  Parameters->Error = SysOutput - Parameters->Error;
+  /* k = cov*X/(1 + X'*cov*X) */
+  MultiplyMatrix(Parameters->Cov, SysInputs, Parameters->NumCoeff,
+      Parameters->NumCoeff, 1, Parameters->Gain);
+  DotProduct(Parameters->Gain, SysInputs, Parameters->NumCoeff, &auxf);
+  auxf = 1.0/(1.0 + auxf);
+  ScaleMatrix(Parameters->Gain, Parameters->NumCoeff, 1, auxf,
+      Parameters->Gain);
+  /* p = p - k*X'*p */
+  MultiplyMatrix(SysInputs, Parameters->Cov, 1, Parameters->NumCoeff,
+      Parameters->NumCoeff, Parameters->Aux1);
+  MultiplyMatrix(Parameters->Gain, Parameters->Aux1, Parameters->NumCoeff, 1,
+      Parameters->NumCoeff, Parameters->Aux2);
+  SubtractMatrix(Parameters->Cov, Parameters->Aux2, Parameters->NumCoeff,
+      Parameters->NumCoeff, Parameters->Cov);
+
+  /* coeffs = coeffs + k*erro */
+  ScaleMatrix(Parameters->Gain, Parameters->NumCoeff, 1, Parameters->Error,
+      Parameters->Gain);
+  AddMatrix(Parameters->SysCoeffs, Parameters->Gain, Parameters->NumCoeff, 1,
+      Parameters->SysCoeffs);
+
   return 0;
 }

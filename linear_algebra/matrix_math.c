@@ -46,7 +46,7 @@ float InvSqrt_approx(float x)
 }
 
 
-float NormVectorL1(float* V, int Size)
+float NormVectorL1(float *V, int Size)
 {
   int32_t i;
   float norm = 0.0;
@@ -57,7 +57,7 @@ float NormVectorL1(float* V, int Size)
 }
 
 
-float NormVectorL2Squared(float* V, uint32_t Size)
+float NormVectorL2Squared(float *V, uint32_t Size)
 {
   int32_t i;
   float norm = 0.0;
@@ -70,16 +70,36 @@ float NormVectorL2Squared(float* V, uint32_t Size)
 
 float NormVectorL2(float* V, uint32_t Size)
 {
-  //return sqrtf(NormVectorL2Squared(V, Size));
-  return 0;
+  /**
+   * Found a problem while compiling for Eclipse IDE.
+   * Worked fine with STMCube IDE, though.
+   * Eclipse would return the error "undefined reference to `sqrt'"
+   * or "undefined reference to `sqrtf'" when using a variable as input
+   * (sqrt(2.0) would compile without errors, but sqrt(variable) would not).
+   *
+   * The solution that worked for me:
+   * [https://www.eclipse.org/forums/index.php?t=msg&th=68204&goto=214058&#msg_214058]
+   */
+  return sqrtf(NormVectorL2Squared(V, Size));
 }
 
 
 void ConcatenateVector(float *V1, int32_t SizeV1, float *V2, int32_t SizeV2,
-    float* Vresult)
+    float *Vresult)
 {
   CopyMatrix(V1,SizeV1,1,Vresult);
   CopyMatrix(V2,SizeV2,1,Vresult+SizeV1);
+}
+
+
+void DotProduct(float *V1, float *V2, int32_t Size, float  *Result)
+{
+  int i;
+  *Result = 0.0;
+  for(i = 0; i < Size; i++){
+    *Result += (*V1) * (*V2);
+    V1++; V2++;
+  }
 }
 
 
@@ -158,7 +178,7 @@ void ScaleMatrix(float *A, int m, int n, float k, float *C)
 }
 
 
-int32_t InvertMatrix(float* A, int n)
+int32_t InvertMatrix(float *A, int n)
 {
   // A = input matrix AND result matrix
   // n = number of rows = number of columns in A (n x n)

@@ -20,16 +20,19 @@ extern "C" {
 
 #define LEAST_SQUARES_VER_MAJOR                                             2021
 #define LEAST_SQUARES_VER_MINOR                                                1
-#define LEAST_SQUARES_VER_PATCH                                                2
+#define LEAST_SQUARES_VER_PATCH                                                3
 #define LEAST_SQUARES_BRANCH_MASTER
 
 
 #include "matrix_math.h"
 
 
+/**
+ * Structure used to operate LMS.
+ */
 typedef struct
 {
-  float *SysCoeffs;    /*!<  */
+  float *SysCoeffs;    /*!< 1-D array of size NumCoeff */
   float *SumYiXji;     /*!< 1-D array of size NumCoeff */
   float *SumXkiXji;    /*!< 2-D array of size NumSamples * NumCoeff
                             float A[NumSamples * NumCoeff]
@@ -40,10 +43,25 @@ typedef struct
 
 
 /**
+ * Structure used to operate RLS.
+ */
+typedef struct
+{
+  float *SysCoeffs;    /*!< 1-D array of size NumCoeff */
+  float *Cov;          /*!< 2-D array of size NumCoeff * NumCoeff */
+  float *Gain;         /*!< 1-D array of size NumCoeff */
+  float *Aux1;         /*!< 1-D array of size NumCoeff for intermediate vars */
+  float *Aux2;         /*!< size of Cov */
+  float Error;
+  uint32_t NumCoeff;   /*!< Number coefficients to discover */
+}RLS_t;
+
+
+/**
  * @brief  Uses the least mean squares algorithm to find the coefficients of
  *         a multidimensional line.
- * @param  SysInput : Values aplied on the input of the line equation.
- * @param  SysOutput : Line equation response to aplied SysInput.
+ * @param  SysInput : Values applied on the input of the line equation.
+ * @param  SysOutput : Line equation response to applied SysInput.
  * @param  Parameters : Handle with all needed variables.
  * @retval void
  * @note   SysInputs is a 2-D array of size NumSamples * NumCoeff
@@ -71,6 +89,21 @@ typedef struct
  *         NumSamples must be equal to or bigger than NumCoeff.
  */
 int32_t LMS_Compute(float* SysInputs, float *SysOutputs, LMS_t *Parameters);
+
+
+/**
+ * @brief  Uses the recursive least squares algorithm to find the coefficients
+ *         of a multidimensional line.
+ * @param  SysInput : Values applied on the input of the line equation.
+ * @param  SysOutput : Line equation response to applied SysInput.
+ * @param  Parameters : Handle with all needed variables.
+ * @retval void
+ * @note   This function must be called multiple times, with different
+ *         SysInputs and SysOutput, until an stop condition tested by the
+ *         caller is satisfied (Parameters->Error sufficiently small or other
+ *         desired condition)
+ */
+int32_t RLS_Compute(float *SysInputs, float SysOutput, RLS_t *Parameters);
 
 #endif /* LEAST_SQUARES_H */
 
