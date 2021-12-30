@@ -120,7 +120,7 @@ void NN_ComputeLayerOutput(NN_Layer_t *Layer, double *Inputs, double *Outputs)
   {
     for(uint32_t i=0; i<Layer->NumberNeurons; i++)
     {
-      NN_ComputeNeuronOutput(&Layer->Neuron[i], Inputs + i);
+      NN_ComputeNeuronOutput(&Layer->Neuron[i], Inputs);
     }
   }
   else
