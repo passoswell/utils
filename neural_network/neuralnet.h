@@ -146,4 +146,23 @@ void NN_InitLayerV2(NN_LayerV2_t *Layer, uint32_t NumberNeurons,
  */
 void NN_DeleteLayerV2(NN_LayerV2_t *Layer);
 
+/**
+ * @brief
+ * @param Layer
+ * @param Inputs
+ * @param Outputs
+ */
+void NN_ComputeLayerOutputV2(NN_LayerV2_t *Layer, double *Inputs,
+    double *Outputs);
+
+/**
+ * @brief
+ * @param Layer
+ * @param Inputs
+ * @param TargetOutputs
+ * @param LearningRate
+ */
+void NN_UpdateLayerWeightsV2(NN_LayerV2_t *Layer, double *Inputs,
+    double *TargetOutputs, double LearningRate);
+
 #endif /* NEURALNET_H */

@@ -155,6 +155,7 @@ void NN_InitLayerV2(NN_LayerV2_t *Layer, uint32_t NumberNeurons,
   Layer->Weight = (double*) malloc(NumberInputs*NumberNeurons*sizeof(double));
   Layer->Bias = (double*) malloc(NumberNeurons*sizeof(double));
   Layer->Output = (double*) malloc(NumberNeurons*sizeof(double));
+  Layer->ActivationFunction = Func;
 }
 
 
@@ -166,7 +167,8 @@ void NN_DeleteLayerV2(NN_LayerV2_t *Layer)
 }
 
 
-void NN_ComputeLayerOutputV2(NN_LayerV2_t *Layer, double *Inputs)
+void NN_ComputeLayerOutputV2(NN_LayerV2_t *Layer, double *Inputs,
+    double *Outputs)
 {
   for(uint32_t i=0; i<Layer->NumberNeurons; i++)
   {
@@ -175,14 +177,33 @@ void NN_ComputeLayerOutputV2(NN_LayerV2_t *Layer, double *Inputs)
     {
       Layer->Output[i] += Layer->Weight[Layer->NumberInputs*i + j] * Inputs[j];
     }
+    Layer->Output[i] = ComputeActivationFunction(Layer->ActivationFunction,
+        Layer->Output[i]);
   }
+
+  Outputs = &Layer->Output[0];
 }
 
 
-void NN_UpdateLayerWeightsV2(NN_Layer_t *Layer, double *Inputs,
+void NN_UpdateLayerWeightsV2(NN_LayerV2_t *Layer, double *Inputs,
     double *TargetOutputs, double LearningRate)
 {
-
+  double learningRate;
+  //Computing the new weights and bias based on desired output, neuron output
+  //and the inputs applied to generate the given output
+  learningRate = LearningRate;
+  if(learningRate > 1.0) learningRate = 1.0;
+  if(learningRate < 0.0) learningRate = 0.0;
+  for(uint32_t i=0; i<Layer->NumberNeurons; i++)
+  {
+    for(uint32_t j=0; j<Layer->NumberInputs; j++)
+    {
+      //wi = wi + eta * (target - out) * X
+      Layer->Weight[Layer->NumberInputs*i + j] += learningRate *
+          (TargetOutputs[i] - Layer->Output[i]) * Inputs[j];
+    }
+    Layer->Bias[i] += learningRate * (TargetOutputs[i] - Layer->Output[i]);
+  }
 }
 
 
