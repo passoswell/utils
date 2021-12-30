@@ -156,6 +156,20 @@ void NN_InitLayerV2(NN_LayerV2_t *Layer, uint32_t NumberNeurons,
   Layer->Bias = (double*) malloc(NumberNeurons*sizeof(double));
   Layer->Output = (double*) malloc(NumberNeurons*sizeof(double));
   Layer->ActivationFunction = Func;
+
+
+  //Giving initial value for each weight and bias
+  for(uint32_t i=0; i<NumberNeurons; i++)
+  {
+    for(uint32_t j=0; j<NumberInputs; j++)
+    {
+      Layer->Weight[NumberInputs*i + j] = (double)rand()/RAND_MAX;
+      Layer->Weight[NumberInputs*i + j] = 2.0 *
+          ( Layer->Weight[Layer->NumberInputs*i + j] - 0.5 )
+                      * NN_INITIAL_WEIGHT_MAX;
+    }
+    Layer->Bias[i] = 0.0;
+  }
 }
 
 
