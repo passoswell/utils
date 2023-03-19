@@ -1,0 +1,3 @@
+[submodule "basic_graphics"]
+	path = basic_graphics
+	url = git@github.com:passoswell/basic_graphics.git
