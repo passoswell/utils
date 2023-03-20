@@ -30,7 +30,7 @@ The following libs are present in this repository:
 The instalation of this lib into a project of any platform is quite simple. You basicaly have four different options for how to add this repository into your project.
 
 ### If you are not interested in updates
-Just download the repository as a zip file, extract the content and move it to the desired folder inside your project. Note that you might have to download the submodules manualy using the same procedure.
+Just download the repository as a zip file [through this link](https://github.com/passoswell/utils/archive/refs/heads/master.zip), extract the content and move it to the desired folder inside your project. Note that you will have to download the submodules manualy using the same procedure on their respective repositories.
 
 ### Adding as a submodule to your git repository
 To do that, just open the terminal inside the folder where you have your repository cloned, open the terminal and type:
@@ -71,6 +71,9 @@ Do not forget to substitute <submodule name> by the name of the desired submodul
 ```
 git submodule update --init basic_graphics
 ```
+
+### Adding the libs to your project
+This task is dependent on the tools and IDEs used and is not covered by this readme.
 
 ## Code Examples
 Example codes for most of the modules are available in the "examples" folder. For the git submodules, a "examples" folder is present in their own folder.
